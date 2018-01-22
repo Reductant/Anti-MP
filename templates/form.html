@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block title %}Anti-MP :: Check who is your nemesis{% endblock %}
+{% block body %}
+    <div id="form-layout">
+    <form method="POST" action="{{ url_for('process') }}">
+          Question 1<br>
+          <input type="text" name="question1" value=""><br>
+          Question 2:<br>
+          <input type="text" name="question2" value=""><br><br>
+          <input type="submit" value="Submit">
+    </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "index.html" %}
+{% block title %}Anti-MP :: Check who is your nemesis{% endblock %}
+{% block body %}
+    <div id="result-layout">
+        {% for question, answer in data.items() %}
+            <p class=response>{{ question }}: {{ answer }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
