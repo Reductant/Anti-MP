@@ -2,12 +2,28 @@
 {% block title %}Anti-MP :: Check who is your nemesis{% endblock %}
 {% block body %}
     <div id="form-layout">
-    <form method="POST" action="{{ url_for('process') }}">
-          Question 1<br>
-          <input type="text" name="question1" value=""><br>
-          Question 2:<br>
-          <input type="text" name="question2" value=""><br><br>
-          <input type="submit" value="Submit">
-    </form>
+        <div>Total questions: {{ num_questions }}</div>
+        <form method="POST" action="{{ url_for('process') }}">
+            {% for i, (issue, _) in issues %}
+                <div class="form-group">
+                    <div id="question_{{ i }}_div">Question {{ i + 1 }}: {{ issue }}</div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="question_{{ i }}" id="question_{{ i }}_y" value="yes">
+                        <label for="question_{{ i }}_y">Yes</label>
+
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="question_{{ i }}" id="question_{{ i }}_n" value="no">
+                        <label for="question_{{ i }}_n">No</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="question_{{ i }}" id="question_{{ i }}_u" value="undecided" checked>
+                        <label for="question_{{ i }}_u">Undecided</label>
+                    </div>
+                </div>
+            {% endfor %}
+            <hr>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
     </div>
 {% endblock %}

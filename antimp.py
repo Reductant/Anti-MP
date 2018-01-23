@@ -50,8 +50,7 @@ def get_page(url):
     text = text.replace("\n", "")
     text = text.replace(",", "")
     text = text.replace("\t", "")
-
-    return (text)
+    return text
 
 
 def preloader():
@@ -67,25 +66,6 @@ def preloader():
     with open("antimp.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(names)
-
-
-def get_agreement(li, mp_number, issue):
-    a = li[mp_number][4].split("<li>")
-
-    voted = []
-    for i in a:
-        if "voted" in i:
-            voted.append(i.split("<a class")[0])
-
-    opinion = 0
-    for i in voted:
-        if issue[1] in i:
-            if "voted for" in i:
-                opinion = 1
-            if "voted against" in i:
-                opinion = -1
-
-    return opinion
 
 
 issue_list = [
@@ -178,23 +158,29 @@ issue_list = [
 ]
 
 
+def get_agreement(li, mp_number, issue):
+    a = li[mp_number][4].split("<li>")
+
+    voted = []
+    for i in a:
+        if "voted" in i:
+            voted.append(i.split("<a class")[0])
+
+    opinion = 0
+    for i in voted:
+        if issue[1] in i:
+            if "voted for" in i:
+                opinion = 1
+            if "voted against" in i:
+                opinion = -1
+
+    return opinion
+
+
 def run():
-    if not os.path.isfile("antimp.csv"):
-        print("The first time this program is run, it needs to download fresh data from Theyworkforyou.com.")
-        print("This may take a few minutes.")
-        print()
-        print("Press ENTER to begin")
-        _ = input()  # underscore if often used as in "don't care" variable
-        preloader()
-        print()
-        print("That's done! The data has been saved permanently, so it won't take so long next time.")
+    check_data()
 
-    with open("antimp.csv") as fp:
-        reader = csvreader(fp)
-        li = list(reader)
-
-    for i in li:
-        i.append(0)
+    li = get_mp_data()
 
     print("Please enter your name:")
     user_name = input()
@@ -242,6 +228,27 @@ def run():
     print()
     print("Press ENTER to exit")
     _ = input()
+
+
+def get_mp_data():
+    with open("antimp.csv") as fp:
+        reader = csvreader(fp)
+        li = list(reader)
+    for i in li:
+        i.append(0)
+    return li
+
+
+def check_data():
+    if not os.path.isfile("antimp.csv"):
+        print("The first time this program is run, it needs to download fresh data from Theyworkforyou.com.")
+        print("This may take a few minutes.")
+        print()
+        print("Press ENTER to begin")
+        _ = input()  # underscore if often used as in "don't care" variable
+        preloader()
+        print()
+        print("That's done! The data has been saved permanently, so it won't take so long next time.")
 
 
 if __name__ == '__main__':

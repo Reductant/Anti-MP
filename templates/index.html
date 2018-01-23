@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% block head %}
-<title>{% block title %}Anti-MP :: find your nemesis{% endblock %}</title>
-<meta charset=utf-8>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-{#<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">#}
-<script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type=text/javascript src="{{ url_for('static', filename='main.js') }}"></script>
-{% endblock %}
+    {% block head %}
+        <title>{% block title %} Anti-MP :: find your nemesis {% endblock %}</title>
+        <meta charset=utf-8>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {#<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">#}
+        <script type=text/javascript src="{{ url_for('static', filename='main.js') }}"></script>
+    {% endblock %}
 </head>
 <body>
 <div class=container>
-  {% block body_title %}
-    <h1><span>{{ self.title() }}</span></h1>
-  {% endblock %}
-  <p class=nav>
-    <a href="{{ url_for('home') }}">Overview</a> //
-    <a href="{{ url_for('check') }}">Check</a> //
-  {% for message in get_flashed_messages() %}
-      <p class=message>{{ message }}</p>
-  {% endfor %}
-  {% block body %}
-  <div id="main-text">
-  <p>Here you can find out who your real nemesis is!
-      Just <a href="{{ url_for('check') }}">fill in the form</a> and see for yourself.</p>
-  </div>
-  {% endblock %}
-  <p class=footer>
-    &copy; Copyright 2017 - {{ current_year }} by Adam Wilson
-  </p>
+    <nav class="nav">
+        <a class="nav-link active" href="{{ url_for('home') }}">Overview</a>
+        <a class="nav-link" href="{{ url_for('check') }}">Check</a>
+    </nav>
+
+    <div class="jumbotron">
+        {% block body_title %}
+            <h1 class="display-4">{{ self.title() }}</h1>
+        {% endblock %}
+        {% block flashes %}
+            {% for message in get_flashed_messages() %}
+                <p class=message>{{ message }}</p>
+            {% endfor %}
+        {% endblock %}
+
+        {% block body %}
+            <p class="lead">Here you can find out who your real nemesis is!</p>
+            <hr class="my-4">
+            <p>Just fill in the form and see for yourself.</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ url_for('check') }}" role="button">Questionnaire</a>
+            </p>
+        {% endblock %}
+    </div>
+
+    <p class=footer>
+        &copy; Copyright 2017 - {{ current_year }} by Adam Wilson
+    </p>
 </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

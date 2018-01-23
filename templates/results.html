@@ -2,8 +2,8 @@
 {% block title %}Anti-MP :: Check who is your nemesis{% endblock %}
 {% block body %}
     <div id="result-layout">
-        {% for question, answer in data.items() %}
-            <p class=response>{{ question }}: {{ answer }}</p>
+        {% for name, party, score in results %}
+            <p class=response>{{ name }} ({{ party }}): {{ score }}</p>
         {% endfor %}
     </div>
 {% endblock %}
