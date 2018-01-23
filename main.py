@@ -1,4 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+This module provides a flask application
+that allows people to run the program
+in the browser.
+
+"""
+
 from flask import Flask, request, render_template
+
+from functools import lru_cache
 
 import antimp
 
@@ -8,11 +18,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+    """Render the homepage"""
     return render_template('index.html')
 
 
 @app.route('/check')
 def check():
+    """Render the form with issues"""
     return render_template('form.html',
                            issues=enumerate(antimp.issue_list),
                            num_questions=len(antimp.issue_list))
@@ -20,6 +32,8 @@ def check():
 
 @app.route('/results', methods=['POST'])
 def process():
+    """Process the results from the user"""
+    # TODO: optimise for speed
     user_data = request.form.copy()
     mp_data = antimp.get_mp_data()
     choices = {
@@ -39,15 +53,12 @@ def process():
             opinion = get_agreement(mp_record[4], slug)
             mp_record[5] += (opinion * user_choice)
 
-    results = []
-    for mp_record in mp_data:
-        results.append([mp_record[0], mp_record[2], mp_record[5]])
+    mp_data.sort(key=lambda x: x[5])
 
-    results.sort(key=lambda x: x[2])
-
-    return render_template('results.html', results=results)
+    return render_template('results.html', results=mp_data)
 
 
+@lru_cache(700)
 def get_agreement(html, issue):
     a = html.split("<li>")
 

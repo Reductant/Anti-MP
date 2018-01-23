@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+This module provides a command line interface
+that allows people to run the program.
+
+It also contains most of the logic.
+
+"""
 import csv
 import urllib.request
 from csv import reader as csvreader
